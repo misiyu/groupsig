@@ -1,19 +1,6 @@
 #include "m_groupsig_c.h"
 
 
-string file2string(string filepath){
-	std::fstream fs(filepath.data());
-	stringstream ss ;
-	ss << fs.rdbuf();
-	return ss.str();
-}
-
-int string2file(string str , string filepath){
-	std::ofstream fs(filepath.data());
-	fs << str ;
-	fs.close();
-	return 0 ;
-}
 int m_mkdir(string filepath)
 {
 	mkdir(filepath.c_str() , S_IRUSR | S_IWUSR | S_IXUSR | S_IRWXG | S_IRWXO);   
