@@ -37,7 +37,7 @@ namespace GroupSigApi
 int create_group_default(std::string& result,
         const std::string& algorithm_method)
 {
-    LOG(DEBUG)<<"CREATE GROUP WITH DEFAULT PARAM";
+    //LOG(DEBUG)<<"CREATE GROUP WITH DEFAULT PARAM";
     GroupSigMethod method = get_algo_method_by_string(algorithm_method);
     std::string param = "";
     return GroupSigFactory::instance(method)->create_group(result, param);

@@ -69,17 +69,35 @@ void M_Groupsig_C::m_create_g(string group_name){
 }
 string M_Groupsig_C::m_add_member(string group_name){
 	this->load_key(group_name);
+	cout << group_name << endl ;
 	string gsk;
 	GroupSigApi::group_member_join(gsk , algorithm_method , this->m_pbc_param 
 			, this->m_gmsk , this->m_gpk , this->m_gamma);
 	this->m_gsk = gsk ;
 	this->store_key(group_name);
-	return gsk+"*"+this->m_gpk;
+	return gsk+"*"+this->m_gpk+"*"+this->m_pbc_param+"*";
 }
 string M_Groupsig_C::m_join_request(string group_name , string id_m){
 	this->load_key(group_name);
-	
-	string result = "" ;
+	Json::Value root;
+	//cout << "join group " << group_name << endl ;
+	root["type"]="NDN-IP";
+	root["data"]["command"]="Join";
+	root["data"]["groupname"]=group_name;
+	root["data"]["real_msg"] = id_m;
+	//cout << "join group \n" << root.toStyledString() << endl ;
+	string result =  send_recv(root.toStyledString());
+
+	int tmp1 = 0;
+	int tmp2 = result.find_first_of('*');
+	this->m_gsk = result.substr(tmp1 , tmp2-tmp1);
+	tmp1 = tmp2+1 ;
+	tmp2 = result.find('*' , tmp1);
+	this->m_gpk = result.substr(tmp1, tmp2-tmp1);
+	tmp1 = tmp2+1 ;
+	tmp2 = result.find('*' , tmp1);
+	this->m_pbc_param = result.substr(tmp1, tmp2-tmp1);
+	this->store_key(group_name);
 	return result ;
 }
 string M_Groupsig_C::m_group_sig(string group_name , string msg){

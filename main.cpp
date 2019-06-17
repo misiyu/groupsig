@@ -11,7 +11,7 @@ void parse_arg(int argc,char **args , string &cmd , string &group_name ,
 	//cout << args[3] << endl ;
 	//cout << args[4] << endl ;
 	if(argc < 3 ){
-		cout << "Usag : ./gsc -(g|a|s|v|o) <group_name> <msg> <sig>\n" ;
+		cout << "Usag : ./gsc -(g|a|s|v|o|j) <group_name> <msg> <sig>\n" ;
 		exit(1);
 	}
 	cmd = args[1];
@@ -44,9 +44,17 @@ int main(int argc , char ** args)
 		cout << "sig " << endl ;
 		cout << "=======================================================" << endl;
 	}else if(cmd == "-v"){
-		bool ret = mgc.m_verify("group0",result , "/hello/1.txt");
+		bool ret = mgc.m_verify( group_name,result , msg);
 	}else if(cmd == "-o"){
-		string A = mgc.m_open_sig("group0",result,"/hello/1.txt");
+		string A = mgc.m_open_sig(group_name,result,msg);
+	}else if(cmd =="-j"){
+		string gsk = mgc.m_join_request(group_name , msg);
+		if(gsk != ""){
+			cout << "ok" << endl ;
+		}else{
+			cout << "err" << endl;
+		}
+		//cout << "get gsk = \n" << gsk << endl ;
 	}else {
 		cout << "Usag : ./gsc -(g|a|s|v|o) <group_name> <sig> <msg>\n" ;
 		exit(1);

@@ -5,7 +5,7 @@ BBS_DIR=${CUR_DIR}/algorithm/bbs04
 DEV_DIR=${CUR_DIR}/devcore
 MAIN_DIR=${CUR_DIR}
 
-INC_DIR= -I${MAIN_DIR} 
+INC_DIR= -I${MAIN_DIR}  -I${ALG_DIR}
 
 G_SRC = ${wildcard  ${ALG_DIR}/*.cpp} \
 	  ${wildcard  ${BBS_DIR}/*.cpp} \
@@ -23,7 +23,8 @@ CCFLAGS=-g -std=c++11 ${INC_DIR}
 LFLAGS=-lgmp -lpbc -lpbc_sig -lpthread -lboost_system -lboost_thread -lboost_filesystem
 
 ${TARGET}: ${OBJ}
-	${CC} ${notdir ${OBJ} } ${G_OBJ} -o $@ ${LFLAGS}
+	${CC} ${notdir ${OBJ} } ${G_OBJ} -o $@ ${LFLAGS} 
+	mv ${TARGET} gsc
 	echo "Compile done."
 ${OBJ}:${SRC}
 	$(CC) ${CCFLAGS} -c $? ${LFLAGS}  

@@ -6,8 +6,8 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <sys/types.h>
-//#include "./algorithm/GroupSig.h"
-#include "GroupSig.h"
+#include "./algorithm/GroupSig.h"
+//#include "GroupSig.h"
 #include "com_tool.h"
 
 using std::string ;
