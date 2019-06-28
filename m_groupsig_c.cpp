@@ -90,6 +90,10 @@ string M_Groupsig_C::m_join_request(string group_name , string id_m){
 
 	int tmp1 = 0;
 	int tmp2 = result.find_first_of('*');
+	if(tmp2 == string::npos) {
+		cout << "get gsk err" << endl ;
+		return "";
+	}
 	this->m_gsk = result.substr(tmp1 , tmp2-tmp1);
 	tmp1 = tmp2+1 ;
 	tmp2 = result.find('*' , tmp1);
@@ -100,12 +104,36 @@ string M_Groupsig_C::m_join_request(string group_name , string id_m){
 	this->store_key(group_name);
 	return result ;
 }
+ /*
+  *send a open signature request to group manager
+  *param :
+  * group_name : name of the group which the user is in 
+  * sig : the signature of msg , (the signature is encoded)
+  * msg : the message string which is signatured 
+  */
+string M_Groupsig_C::m_opensig_request(string group_name , string sig ,
+		string msg){
+	this->load_key(group_name);
+	Json::Value root;
+	cout << "open sig " << group_name << endl ;
+	cout << "sig = \n" << sig << endl ;
+	cout << "msg = \n" << msg << endl ;
+	root["type"]="NDN-IP";
+	root["data"]["command"]="Open";
+	root["data"]["groupname"]=group_name;
+	root["data"]["sig"] = sig;
+	root["data"]["msg"] = msg;
+	//cout << "join group \n" << root.toStyledString() << endl ;
+	string result =  send_recv(root.toStyledString());
+
+	return result ;
+}
 string M_Groupsig_C::m_group_sig(string group_name , string msg){
 	this->load_key(group_name);
 	string sig ;
 	GroupSigApi::group_sig(sig , algorithm_method , m_gpk , m_gsk , m_pbc_param , 
 			msg);
-	return sig ;
+	return encode_groupsig(sig) ;
 }
 bool M_Groupsig_C::m_verify(string group_name ,string sig , string msg){
 

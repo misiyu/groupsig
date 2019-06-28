@@ -18,14 +18,15 @@ TARGET=gsc
 TARGET1 = mgs
 CC=g++
 CCFLAGS=-g -std=c++11 ${INC_DIR} 
-LFLAGS=-lgmp -lpbc -lpbc_sig -lpthread -lboost_system -lboost_thread -lboost_filesystem -ljsoncpp
+LFLAGS=-lgmp -lpbc -lpbc_sig -lpthread -lboost_system -lboost_thread -lboost_filesystem -ljsoncpp -lsqlite3
 
 all: ${TARGET} mgs
 
 mgs :  m_groupsig_s.o easylog.o easylogging++.o SHA3.o \
-	GroupSig.o KeyLoaderDumper.o GroupSig_BBS.o GroupSig_BBS_Impl.o
+	GroupSig.o KeyLoaderDumper.o GroupSig_BBS.o GroupSig_BBS_Impl.o keydb.o
 	${CC} -o mgs m_groupsig_s.o m_groupsig_c.o easylog.o easylogging++.o SHA3.o \
-	GroupSig.o KeyLoaderDumper.o GroupSig_BBS.o GroupSig_BBS_Impl.o ${LFLAGS} 
+	GroupSig.o KeyLoaderDumper.o GroupSig_BBS.o GroupSig_BBS_Impl.o keydb.o \
+	${LFLAGS} 
 
 ${TARGET} : main.o m_groupsig_c.o easylog.o easylogging++.o SHA3.o \
 	GroupSig.o KeyLoaderDumper.o GroupSig_BBS.o GroupSig_BBS_Impl.o
@@ -68,11 +69,8 @@ GroupSig_BBS_Impl.o : ./algorithm/bbs04/GroupSig_BBS_Impl.cpp \
 	algorithm/KeyLoaderDumper.h algorithm/bbs04/GroupSig_BBS.h 
 	g++ ${CCFLAGS} -c ./algorithm/bbs04/GroupSig_BBS_Impl.cpp 
 
-#GroupSig_BBS_Impl.o : ./algorithm/bbs04/GroupSig_BBS_Impl.cpp \
-	#./algorithm/bbs04/GroupSig_BBS_Impl.h devcore/SHA3.h devcore/CommonFunc.h \
-	#algorithm/KeyLoaderDumper.h algorithm/bbs04/GroupSig_BBS.h \
-	#algorithm/bbs04/GroupSig_BBS_Impl.h
-	#g++ ${CCFLAGS} -c ./algorithm/bbs04/GroupSig_BBS_Impl.cpp 
+keydb.o : keydb.cpp keydb.h
+	g++ ${CCFLAGS} -c ./keydb.cpp
 
 
 clean:

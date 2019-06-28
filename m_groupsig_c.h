@@ -27,6 +27,7 @@ public:
 	void m_create_g(string group_name);
 	string m_add_member(string group_name);
 	string m_join_request(string group_name , string id_m);
+	string m_opensig_request(string group_name , string sig , string msg);
 	string m_group_sig(string group_name , string msg);
 	bool m_verify(string group_name ,string sig , string msg);
 	string m_open_sig(string group_name ,string sig , string msg);

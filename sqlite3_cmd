@@ -1,0 +1,2 @@
+//清空表
+delete from user;

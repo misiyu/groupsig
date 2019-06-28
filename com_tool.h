@@ -35,6 +35,43 @@ static int string2file(string str , string filepath){
 	return 0 ;
 }
 
+static string encode_groupsig(string str){
+	char buff[2000] ;
+	int str_len = str.length();
+	int buff_len = 0;
+	for (int i = 0; i < str_len; i++) {
+		if(str[i]=='{' || str[i] == '}') buff[buff_len++]='A' ;
+		else if(str[i] == '\n') buff[buff_len++] = '~';
+		else if(str[i] == '"') buff[buff_len++] = '_';
+		else if(str[i] == ':') buff[buff_len++] = '-';
+		else if(str[i] == ',') buff[buff_len++] = '.';
+		else if(str[i] == ' ') continue ;
+		else buff[buff_len++] = str[i] ;
+	}
+	buff[buff_len++] = '\0';
+	string result = buff ;
+	return result ;
+}
+
+static string decode_groupsig(string str){
+	char buff[2000] ;
+	int str_len = str.length();
+	int buff_len = 0;
+	for (int i = 0; i < str_len; i++) {
+		if(str[i] == '~') buff[buff_len++] = '\n';
+		else if(str[i] == '_') buff[buff_len++] = '"';
+		else if(str[i] == '-') buff[buff_len++] = ':';
+		else if(str[i] == '.') buff[buff_len++] = ',';
+		else if(str[i] == ' ') continue ;
+		else buff[buff_len++] = str[i] ;
+	}
+	buff[0] = '{';
+	buff[buff_len-2] = '}';
+	buff[buff_len++] = '\0';
+	string result = buff ;
+	return result ;
+}
+
 static ssize_t readn(int fd, char *buf, int n){
     size_t nleft = n; //还需要读取的字节数
     char *bufptr = buf; //指向read函数当前存放数据的位置

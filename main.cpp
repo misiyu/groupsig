@@ -12,10 +12,24 @@ void parse_arg(int argc,char **args , string &cmd , string &group_name ,
 	//cout << args[4] << endl ;
 	if(argc < 3 ){
 		cout << "Usag : ./gsc -(g|a|s|v|o|j) <group_name> <msg> <sig>\n" ;
+		cout << "Usag : generate a group : ./gsc -g <group_name> \n" ;
+		cout << "Usag : get a member key : ./gsc -a <group_name> \n" ;
+		cout << "Usag : sign a message : ./gsc -s <group_name> messsage\n" ;
+		cout << "Usag : verify a signatrue : ./gsc -s <group_name> messsage\
+			sig\n" ;
+		cout << "Usag : join a group : ./gsc -j <group_name> <username>\n" ;
+		cout << "Usag : open a signatrue : ./gsc -s <group_name> messsage\
+			sig\n" ;
+
 		exit(1);
 	}
 	cmd = args[1];
 	group_name = args[2];
+	if(cmd == "-j" && argc < 4){
+		cout << "Usag : join a group : ./gsc -j <group_name> <username>\n" ;
+	}else if(cmd == "-s" && argc < 4){
+		cout << "Usag : sign a message : ./gsc -s <group_name> messsage\n" ;
+	}
 	if(argc >= 4) msg = args[3];
 	if(argc >= 5) sig = args[4];
 }
@@ -44,9 +58,11 @@ int main(int argc , char ** args)
 		cout << "sig " << endl ;
 		cout << "=======================================================" << endl;
 	}else if(cmd == "-v"){
-		bool ret = mgc.m_verify( group_name,result , msg);
+		bool ret = mgc.m_verify( group_name,sig , msg);
 	}else if(cmd == "-o"){
-		string A = mgc.m_open_sig(group_name,result,msg);
+		//string A = mgc.m_open_sig(group_name,sig,msg);
+		string username = mgc.m_opensig_request(group_name , sig , msg);
+		cout << username << endl ;
 	}else if(cmd =="-j"){
 		string gsk = mgc.m_join_request(group_name , msg);
 		if(gsk != ""){
