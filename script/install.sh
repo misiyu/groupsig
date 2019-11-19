@@ -39,7 +39,7 @@ function download_and_install()
     local PKG_NAME=${CUR_DIR}/${pkg_name}.tar.gz
     local PKG_PATH=${CUR_DIR}/${pkg_name}
     local command="wget "${url}" -O ${pkg_name}.tar.gz"
-    execute_cmd "${command}"
+    #execute_cmd "${command}"
     
     command="tar -xvf "${PKG_NAME}
     execute_cmd "${command}"
@@ -52,7 +52,7 @@ function download_and_install()
     cd ${PKG_PATH}
     execute_cmd "${install_cmd}"
 
-    execute_cmd "rm -rf ${PKG_NAME}"
+    #execute_cmd "rm -rf ${PKG_NAME}"
     execute_cmd "rm -rf ${PKG_PATH}"
 }
 

@@ -139,6 +139,7 @@ bool M_Groupsig_C::m_verify(string group_name ,string sig , string msg){
 
 	this->load_key(group_name);
 	int ret = 1;
+	sig = decode_groupsig(sig) ;
 	GroupSigApi::group_verify(ret , msg , sig , algorithm_method , m_gpk , 
 			m_pbc_param) ;
 	if(ret) return false ;

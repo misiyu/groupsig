@@ -15,10 +15,10 @@ void parse_arg(int argc,char **args , string &cmd , string &group_name ,
 		cout << "Usag : generate a group : ./gsc -g <group_name> \n" ;
 		cout << "Usag : get a member key : ./gsc -a <group_name> \n" ;
 		cout << "Usag : sign a message : ./gsc -s <group_name> messsage\n" ;
-		cout << "Usag : verify a signatrue : ./gsc -s <group_name> messsage\
+		cout << "Usag : verify a signatrue : ./gsc -v <group_name> messsage\
 			sig\n" ;
 		cout << "Usag : join a group : ./gsc -j <group_name> <username>\n" ;
-		cout << "Usag : open a signatrue : ./gsc -s <group_name> messsage\
+		cout << "Usag : open a signatrue : ./gsc -o <group_name> messsage\
 			sig\n" ;
 
 		exit(1);
@@ -59,10 +59,15 @@ int main(int argc , char ** args)
 		cout << "=======================================================" << endl;
 	}else if(cmd == "-v"){
 		bool ret = mgc.m_verify( group_name,sig , msg);
+		cout << "=======================================================" << endl;
+		cout << "verify ret = " << ret << endl ;
+		cout << "=======================================================" << endl;
+		string2file(to_string(ret),"./pipefile");
 	}else if(cmd == "-o"){
 		//string A = mgc.m_open_sig(group_name,sig,msg);
 		string username = mgc.m_opensig_request(group_name , sig , msg);
 		cout << username << endl ;
+		string2file(username,"./pipefile");
 	}else if(cmd =="-j"){
 		string gsk = mgc.m_join_request(group_name , msg);
 		if(gsk != ""){
@@ -76,26 +81,7 @@ int main(int argc , char ** args)
 		exit(1);
 	}
 
-	//mgc.m_create_g("group0");
-	//result = mgc.m_add_member("group0");
-	//cout << "=========================================================" << endl;
-	//cout << result << endl ;
-	//cout << "=========================================================" << endl;
-	//result = mgc.m_group_sig("group0" , "/hello/1.txt");
-	//cout << "=========================================================" << endl;
-	//cout << result << endl ;
-	//cout << "=========================================================" << endl;
 
-	//bool ret = mgc.m_verify("group0",result , "/hello/1.txt");
-
-	//cout << "=========================================================" << endl;
-	//cout << ret << endl ;
-	//cout << "=========================================================" << endl;
-
-	//string A = mgc.m_open_sig("group0",result,"/hello/1.txt");
-	//cout << "=========================================================" << endl;
-	//cout << A << endl ;
-	//cout << "=========================================================" << endl;
 	
 	cout << argc << endl ;
 
